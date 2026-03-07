@@ -8,6 +8,12 @@
     "types": ["vite/client"],
     "skipLibCheck": true,
 
+    /* 配置路径别名核心 */
+    "baseUrl": ".", // 基础路径（相对于当前tsconfig.app.json文件，即项目根目录）
+    "paths": {
+      "@/*": ["src/*"] // 匹配@/xxx → src/xxx
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
