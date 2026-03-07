@@ -4,8 +4,10 @@ import type { RouteObject } from 'react-router-dom';
 
 // 页面组件
 import Home from '@/pages/Home';
+import Generate from '@/pages/Generate';
+import Collection from '@/pages/Collection';
+import Profile from '@/pages/Profile';
 import Record from '@/pages/Record';
-import Collect from '@/pages/Collect';
 
 /**
  * 路由配置
@@ -22,12 +24,21 @@ const routes: RouteObject[] = [
     element: <Home />,
   },
   {
-    path: '/record',
-    element: <Record />,
+    path: '/generate',
+    element: <Generate />,
   },
   {
-    path: '/collect',
-    element: <Collect />,
+    path: '/collection',
+    element: <Collection />,
+  },
+  {
+    path: '/profile',
+    element: <Profile />,
+  },
+  // 保留旧路由兼容
+  {
+    path: '/record',
+    element: <Record />,
   },
   {
     path: '*',
