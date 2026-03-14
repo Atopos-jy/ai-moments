@@ -53,7 +53,13 @@ service.interceptors.response.use(
     }
 
     // 根据后端返回的状态码进行处理
-    const code = data.code || 200;
+    // 兼容标准 REST API (code) 和第三方 API (如通义千问直接返回数据)
+    const code = data.code;
+
+    // 如果没有 code 字段，说明是第三方 API 直接返回的数据
+    if (code === undefined) {
+      return data;
+    }
 
     // 成功
     if (code === 200 || code === 0) {

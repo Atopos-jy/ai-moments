@@ -44,7 +44,6 @@ const routes: RouteObject[] = [
       },
     ],
   },
-  // 保留旧路由兼容（不使用布局）
   {
     path: '/record',
     element: <Record />,

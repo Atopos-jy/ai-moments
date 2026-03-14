@@ -11,11 +11,20 @@ import request from "./request";
 
 /**
  * 通用响应接口
+ * 兼容标准 REST API 和第三方 API（如通义千问）
  */
 export interface ApiResponse<T> {
-  code: number;
-  message: string;
-  data: T;
+  /** 业务状态码（标准 REST API） */
+  code?: number;
+  /** 提示信息（标准 REST API） */
+  message?: string;
+  /** 数据（标准 REST API） */
+  data?: T;
+  /** 
+   * 直接响应内容（第三方 API 如通义千问）
+   * 当第三方 API 直接返回数据而不包装时，整个响应对象就是 T
+   */
+  [key: string]: unknown;
 }
 
 /**

@@ -1,6 +1,7 @@
 import http from "@/utils/http";
 import { getDashscopeApiKey } from "@/utils/apiKey";
 import { DASHSCOPE_CONFIG } from "@/config/dashscope";
+
 // ==================== 类型定义 ====================
 
 /**
@@ -103,9 +104,9 @@ export const generateMoment = async (
   const apiKey = getDashscopeApiKey(); 
   console.log("API Key 存在：", !!apiKey);
 
-  // 2. 构建请求参数（关键修改：使用 DASHSCOPE_CONFIG 中的配置）
+  // 2. 构建请求参数
   const requestData: DashscopeRequestParams = {
-    model: DASHSCOPE_CONFIG.DEFAULT_MODEL, // 替换原 DEFAULT_MODEL
+    model: DASHSCOPE_CONFIG.DEFAULT_MODEL,
     input: {
       prompt: buildPrompt(params),
     },
@@ -115,7 +116,8 @@ export const generateMoment = async (
     },
   };
 
-  // 3. 发送请求（关键修改：使用配置中的 URL 和超时时间）
+  // 3. 发送请求（使用统一封装的 http）
+  // 错误处理已在 request.ts 拦截器中统一处理
   const response = await http.post<DashscopeResponse>(
     `${DASHSCOPE_CONFIG.BASE_URL}${DASHSCOPE_CONFIG.TEXT_GENERATION_ENDPOINT}`, 
     requestData,
@@ -128,8 +130,10 @@ export const generateMoment = async (
     }
   );
 
-  if (response.data?.output?.text) {
-    return response.data?.output?.text.trim();
+  // http 封装对于第三方 API 直接返回原始数据
+  const responseData = response as unknown as DashscopeResponse;
+  if (responseData?.output?.text) {
+    return responseData.output.text.trim();
   }
 
   throw new Error("API 返回数据格式异常");
