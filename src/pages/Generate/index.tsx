@@ -10,6 +10,7 @@ import {
   Card,
   Space,
   InputNumber,
+  Modal,
 } from 'antd';
 import {
   CameraOutlined,
@@ -30,6 +31,7 @@ import {
   toggleCopywritingCollect,
 } from '@/store/modules/copywritingSlice';
 import type { SceneType, StyleType, GeneratedCopywriting } from '@/types';
+import { isLoggedIn, setRedirectFrom } from '@/utils/auth';
 
 
 
@@ -99,8 +101,25 @@ const Generate = () => {
     }
   };
 
-  // 处理复制
+  // 处理复制（需要登录）
   const handleCopy = async (content: string) => {
+    // 检查登录状态
+    if (!isLoggedIn()) {
+      // 保存当前路径
+      setRedirectFrom('/generate');
+      
+      Modal.confirm({
+        title: '需要登录',
+        content: '复制文案需要登录，是否立即登录？',
+        okText: '去登录',
+        cancelText: '取消',
+        onOk: () => {
+          navigate('/login');
+        },
+      });
+      return;
+    }
+
     try {
       await navigator.clipboard.writeText(content);
       message.success('复制成功');

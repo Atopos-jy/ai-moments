@@ -1,5 +1,6 @@
 // src/pages/Profile/index.tsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   message, 
   Switch, 
@@ -19,6 +20,7 @@ import {
   RightOutlined,
   EditFilled,
 } from '@ant-design/icons';
+import { getCurrentUser, logout, type LoginUser } from '@/utils/auth';
 
 // ==================== 组件 ====================
 
@@ -27,8 +29,19 @@ import {
  * 包含：个人中心、会员中心、工具插件、暗黑模式
  */
 const Profile = () => {
+  const navigate = useNavigate();
+  
   // 状态
   const [darkMode, setDarkMode] = useState(false);
+  // 直接获取当前用户信息（不需要 useEffect）
+  const currentUser: LoginUser | null = getCurrentUser();
+
+  // 处理退出登录
+  const handleLogout = () => {
+    logout();
+    message.success('已退出登录');
+    navigate('/login', { replace: true });
+  };
 
   // 设置菜单项
   const settingsItems: MenuProps['items'] = [
@@ -42,7 +55,7 @@ const Profile = () => {
   // 处理设置点击
   const handleSettingClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'logout') {
-      message.success('已退出登录');
+      handleLogout();
     }
   };
 
@@ -87,13 +100,15 @@ const Profile = () => {
             {/* 信息 */}
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-medium text-gray-800">创意达人Li</h2>
+                <h2 className="text-lg font-medium text-gray-800">
+                  {currentUser?.nickname || currentUser?.username || '用户'}
+                </h2>
                 <EditOutlined 
                   className="text-sm text-gray-400 cursor-pointer"
                   onClick={() => message.info('编辑昵称')}
                 />
               </div>
-              <p className="text-sm text-gray-500 mt-1">伲称</p>
+              <p className="text-sm text-gray-500 mt-1">{currentUser?.username || ''}</p>
             </div>
           </div>
         </div>
