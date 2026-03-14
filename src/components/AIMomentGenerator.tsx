@@ -101,6 +101,8 @@ const AIMomentGenerator = () => {
 
       const result = await generateMoment(params);
 
+      console.log(result);
+      
       // 更新成功状态
       setState((prev) => ({
         ...prev,
