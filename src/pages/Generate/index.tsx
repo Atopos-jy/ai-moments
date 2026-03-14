@@ -9,6 +9,7 @@ import {
   message,
   Card,
   Space,
+  InputNumber,
 } from 'antd';
 import {
   CameraOutlined,
@@ -62,8 +63,12 @@ const Generate = () => {
   const [selectedScene, setSelectedScene] = useState<SceneType>('日常分享');
   const [selectedStyle, setSelectedStyle] = useState('专业');
   const [keywords, setKeywords] = useState('');
-  const [lengthLimit, setLengthLimit] = useState('');
+  const [lengthLimit, setLengthLimit] = useState('50-100');
   const [detailEnabled, setDetailEnabled] = useState(true);
+  // 新增控制条件
+  const [generateCount, setGenerateCount] = useState<number>(1);
+  const [useEmoji, setUseEmoji] = useState<boolean>(true);
+  const [useHashtag, setUseHashtag] = useState<boolean>(false);
 
   // 处理生成
   const handleGenerate = async () => {
@@ -74,8 +79,10 @@ const Generate = () => {
       person: '我' as const,
       keywords,
       wordCount: '50-100字' as const,
-      withEmoji: true,
-      withHashtag: true,
+      withEmoji: useEmoji,
+      withHashtag: useHashtag,
+      count: generateCount,
+      lengthLimit,
     };
     
     const result = await dispatch(fetchGenerateCopywriting(params));
@@ -214,10 +221,45 @@ const Generate = () => {
               <div>
                 <label className="text-sm text-gray-600 block mb-2">长度限制</label>
                 <Input
-                  placeholder="长度限制"
+                  placeholder="例如：50-100"
                   value={lengthLimit}
                   onChange={(e) => setLengthLimit(e.target.value)}
                   className="rounded-lg"
+                />
+              </div>
+
+              {/* 生成数量 */}
+              <div>
+                <label className="text-sm text-gray-600 block mb-2">生成数量</label>
+                <InputNumber
+                  min={1}
+                  max={10}
+                  placeholder="请输入生成数量"
+                  value={generateCount}
+                  onChange={(value) => setGenerateCount(value || 1)}
+                  className="rounded-lg w-full"
+                />
+              </div>
+
+              {/* 使用 Emoji */}
+              <div className="flex items-center justify-between">
+                <label className="text-sm text-gray-600">使用 Emoji</label>
+                <Switch 
+                  checked={useEmoji} 
+                  onChange={setUseEmoji}
+                  checkedChildren="开启"
+                  unCheckedChildren="关闭"
+                />
+              </div>
+
+              {/* 使用话题标签 */}
+              <div className="flex items-center justify-between">
+                <label className="text-sm text-gray-600">添加话题标签 #</label>
+                <Switch 
+                  checked={useHashtag} 
+                  onChange={setUseHashtag}
+                  checkedChildren="开启"
+                  unCheckedChildren="关闭"
                 />
               </div>
             </div>

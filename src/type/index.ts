@@ -66,6 +66,9 @@ export interface GenerateParams {
   wordCount: WordCountType;
   withEmoji: boolean;
   withHashtag: boolean;
+  // 新增控制参数
+  count?: number;
+  lengthLimit?: string;
 }
 
 // AI请求参数

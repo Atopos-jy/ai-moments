@@ -71,18 +71,28 @@ export const fetchGenerateCopywriting = createAsyncThunk<
   'copywriting/fetchGenerate',
   async (params, { rejectWithValue }) => {
     try {
-      const singleText = await generateMoment({
+      const generatedText = await generateMoment({
         prompt: `${params.scene} ${params.style} ${params.keywords || ''}`,
         scene: params.scene,
         style: params.style,
+        count: params.count || 1,
+        useEmoji: params.withEmoji,
+        useHashtag: params.withHashtag,
+        lengthLimit: params.lengthLimit || '50-100',
       });
 
-      // 把单条结果转换成组件需要的数组格式
-      const processedContents = [{
-        id: Date.now(),
-        content: singleText,
+      // 根据编号格式分割多条文案（匹配 "1. "、"2. " 等格式）
+      const contents = generatedText
+        .split(/\n(?=\d+\.\s)/)  // 在数字编号前分割
+        .map((content) => content.trim())
+        .filter((content) => content.length > 0);
+
+      // 转换成组件需要的数组格式
+      const processedContents = contents.map((content, index) => ({
+        id: Date.now() + index,
+        content,
         isCollected: false,
-      }];
+      }));
 
       return processedContents;
     } catch {

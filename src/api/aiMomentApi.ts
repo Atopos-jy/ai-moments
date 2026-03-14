@@ -59,6 +59,14 @@ export interface GenerateMomentParams {
   scene?: string;
   /** 风格类型（可选） */
   style?: string;
+  /** 生成数量（可选，默认1条） */
+  count?: number;
+  /** 是否使用 emoji（可选，默认true） */
+  useEmoji?: boolean;
+  /** 是否添加话题标签 #（可选，默认false） */
+  useHashtag?: boolean;
+  /** 字数限制（可选，默认50-100字） */
+  lengthLimit?: string;
 }
 
 
@@ -69,9 +77,17 @@ export interface GenerateMomentParams {
  * @returns 完整的提示词
  */
 const buildPrompt = (params: GenerateMomentParams): string => {
-  const { prompt, scene, style } = params;
+  const { 
+    prompt, 
+    scene, 
+    style, 
+    count = 1, 
+    useEmoji = true, 
+    useHashtag = false,
+    lengthLimit = "50-100"
+  } = params;
   
-  let fullPrompt = `请帮我生成一条朋友圈文案。\n\n要求：${prompt}`;
+  let fullPrompt = `请帮我生成${count}条朋友圈文案。\n\n要求：${prompt}`;
   
   if (scene) {
     fullPrompt += `\n场景：${scene}`;
@@ -81,11 +97,18 @@ const buildPrompt = (params: GenerateMomentParams): string => {
     fullPrompt += `\n风格：${style}`;
   }
   
-  fullPrompt += `\n\n请生成一条适合发朋友圈的文案，要求：
+  // 构建控制条件说明
+  fullPrompt += `\n\n生成要求：
 1. 语言自然、有感染力
-2. 可以适当使用 emoji 增加趣味性
-3. 字数控制在 50-100 字左右
-4. 直接返回文案内容，不需要额外解释`;
+2. ${useEmoji ? '请使用 emoji 增加趣味性' : '请不要使用 emoji'}
+3. ${useHashtag ? '请添加相关话题标签（#标签名）' : '请不要添加话题标签'}
+4. 字数控制在 ${lengthLimit} 字左右
+5. 直接返回文案内容，不需要额外解释`;
+
+  // 如果生成多条，添加编号要求
+  if (count > 1) {
+    fullPrompt += `\n6. 请生成${count}条不同风格的文案，每条用数字编号（1. 2. 3. ...），方便我选择`;
+  }
 
   return fullPrompt;
 };
