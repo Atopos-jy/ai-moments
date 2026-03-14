@@ -11,6 +11,8 @@ import {
 } from '@ant-design/icons';
 import { useAppDispatch } from '@/hooks';
 import { fetchCopywritingRecords, fetchCopywritingCollects } from '@/store/modules/copywritingSlice';
+import type { WaterfallItem } from '@/types/home';
+import waterfallItemsData from '@/assets/mock/waterfall_items.json';
 
 const { Search } = Input;
 
@@ -24,41 +26,8 @@ const TOP_CATEGORIES = [
   { key: 'marketing', icon: <FileTextOutlined />, label: '营销文案', color: '#fa8c16' },
 ];
 
-// 瀑布流文案数据
-const WATERFALL_ITEMS = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=400&fit=crop',
-    title: '美食打卡必备句式，让你的朋友圈更有格调',
-    tags: ['复制', '收藏', '转发'],
-    author: '小橘',
-    likes: 19,
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=350&fit=crop',
-    title: '美食打卡必备句式，让你的朋友圈更有格调',
-    tags: ['复制', '优化'],
-    author: '创意达人',
-    likes: 38,
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&h=420&fit=crop',
-    title: '周末探店文案，轻松get高点赞',
-    tags: ['复制', '收藏'],
-    author: '美食家',
-    likes: 56,
-  },
-  {
-    id: 4,
-    image: 'https://images.unsplash.com/photo-1493770348161-369560ae357d?w=300&h=380&fit=crop',
-    title: '早餐打卡文案，开启美好一天',
-    tags: ['复制', '转发'],
-    author: '早安君',
-    likes: 42,
-  },
-];
+// 瀑布流文案数据（从 JSON 文件导入）
+const WATERFALL_ITEMS: WaterfallItem[] = waterfallItemsData;
 
 // ==================== 组件 ====================
 

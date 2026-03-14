@@ -7,7 +7,7 @@ import type {
   GeneratedCopywriting,
   SceneType,
   StyleType 
-} from "@/type";
+} from "@/types";
 
 import { generateMoment } from "@/api/aiMomentApi";
 

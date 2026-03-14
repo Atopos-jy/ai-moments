@@ -29,7 +29,7 @@ import {
   addCollect,
   toggleCopywritingCollect,
 } from '@/store/modules/copywritingSlice';
-import type { SceneType, StyleType, GeneratedCopywriting } from '@/type';
+import type { SceneType, StyleType, GeneratedCopywriting } from '@/types';
 
 
 

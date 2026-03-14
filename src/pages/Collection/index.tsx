@@ -16,7 +16,7 @@ import {
   fetchCopywritingRecords,
   removeCollect,
 } from '@/store/modules/copywritingSlice';
-import type { Collect, CopywritingRecord } from '@/type';
+import type { Collect, CopywritingRecord } from '@/types';
 
 // ==================== 组件 ====================
 

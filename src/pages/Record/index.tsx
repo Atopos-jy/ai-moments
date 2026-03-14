@@ -13,7 +13,7 @@ import {
   fetchCopywritingRecords,
   deleteRecord,
 } from '@/store/modules/copywritingSlice';
-import type { CopywritingRecord } from '@/type';
+import type { CopywritingRecord } from '@/types';
 
 /**
  * 历史记录页组件
